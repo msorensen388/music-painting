@@ -1,19 +1,25 @@
 import fs from "node:fs";
-import { drawMonochromaticV1 } from "./drawMonochromatic/drawMonochromaticV1";
+import { drawMonochromaticV1 } from "./drawMonochromatic/drawMonochromaticV1.js";
+import CLILoadingAnimation from "cli-loading-animation";
 
-const file = "Sensoren_Technology_Is_Magic_2496.wav";
+const { loading } = CLILoadingAnimation;
 
-const maxSize = 100;
+const fileName = "Sensoren_Technology_Is_Magic_2496.wav";
+const { start, stop } = loading("Generating image...");
+start();
 
-fs.readFile(`./${file}`, (err, data) => {
+fs.readFile(`./${fileName}`, async (err, data) => {
   if (err) {
     console.error(err);
     return;
   }
 
-  const canvas = drawMonochromaticV1(data, maxSize);
+  const options = {
+    fileName,
+    maxSize: 100,
+    csv: true,
+  };
 
-  // Write the image to file
-  const buffer = canvas.toBuffer("image/png");
-  fs.writeFileSync(`./${file}-${new Date().toString()}.png`, buffer);
+  await drawMonochromaticV1(data, options);
+  stop();
 });

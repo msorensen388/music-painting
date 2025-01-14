@@ -4,15 +4,18 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clear": "rm -r ./output"
   },
-  "author": "",
+  "author": "Michael Sorensen",
   "license": "ISC",
-  "description": "",
+  "description": "Create static audio visualizations",
   "type": "module",
   "dependencies": {
     "@echogarden/wave-codec": "^0.2.1",
     "canvas": "^3.0.1",
+    "cli-loading-animation": "^1.0.6",
+    "wavefile": "^11.0.0",
     "wavefile-parser": "^1.0.1"
   }
 }

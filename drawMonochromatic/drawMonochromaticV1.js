@@ -1,9 +1,24 @@
 import { decodeWaveToFloat32Channels } from "@echogarden/wave-codec";
 import { createCanvas } from "canvas";
+import {
+  convertRange,
+  getMinMax,
+  exportCanvasToPng,
+  exportToCsv,
+} from "../utils.js";
 
-export const drawMonochromaticV1 = (data, maxSize) => {
+export const drawMonochromaticV1 = (data, userOptions) => {
   let [colors, opacities] = decodeWaveToFloat32Channels(data).audioChannels;
   const dataLength = colors.length;
+
+  const { fileName, maxSize, csv } = Object.assign(
+    {
+      fileName: "output-image",
+      maxSize: null,
+      csv: false,
+    },
+    userOptions
+  );
   const size = maxSize || Math.floor(Math.sqrt(dataLength));
 
   // Get the min and max values of everything to make calculations with later
@@ -32,6 +47,11 @@ export const drawMonochromaticV1 = (data, maxSize) => {
     opacityRows.push(opacities.slice(start, end));
   }
 
+  if (csv) {
+    exportToCsv(colorRows, fileName);
+  }
+
+  // render the data points to a canvas
   const canvas = createCanvas(size, size);
   const context = canvas.getContext("2d");
 
@@ -42,24 +62,5 @@ export const drawMonochromaticV1 = (data, maxSize) => {
     }
   }
 
-  return canvas;
+  exportCanvasToPng(canvas, fileName);
 };
-
-const getMinMax = (values) => {
-  let min = values[0];
-  let max = 0;
-  for (var i = 0; i < values.length; i++) {
-    if (values[i] > max) {
-      max = values[i];
-    }
-    if (values[i] < min) {
-      min = values[i];
-    }
-  }
-  return [min, max];
-};
-
-// linear interpolation
-function convertRange(value, r1, r2) {
-  return ((value - r1[0]) * (r2[1] - r2[0])) / (r1[1] - r1[0]) + r2[0];
-}
