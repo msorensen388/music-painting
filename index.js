@@ -4,7 +4,7 @@ import CLILoadingAnimation from "cli-loading-animation";
 
 const { loading } = CLILoadingAnimation;
 
-const fileName = "Sensoren_Technology_Is_Magic_2496.wav";
+const fileName = "Krankenwagen (JM Master A).wav";
 
 const { start, stop } = loading("Generating image...");
 
@@ -12,15 +12,17 @@ start();
 
 fs.readFile(`./${fileName}`, async (err, data) => {
   if (err) {
+    stop();
     console.error(err);
     return;
   }
 
   const options = {
     fileName,
-    offset: 4000,
     maxSize: 1000,
     csv: false,
+    colorModifiers: [Math.random(), Math.random(), Math.random()],
+    backgroundColor: "#000000",
   };
 
   await drawMonochromaticV1(data, options);
