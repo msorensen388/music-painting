@@ -17,7 +17,10 @@ export const getMinMax = (values) => {
 export const convertRange = (value, r1, r2) =>
   ((value - r1[0]) * (r2[1] - r2[0])) / (r1[1] - r1[0]) + r2[0];
 
-const timestampFileName = (fileName) => `${fileName}-${new Date().toString()}`;
+export const timestampFileName = (fileName) => {
+  const date = new Date().toUTCString().replace(/ /g, "_");
+  return `${fileName}-${date}`;
+};
 
 const createOutputFolders = (dir) => {
   if (!fs.existsSync(dir)) {
@@ -25,24 +28,22 @@ const createOutputFolders = (dir) => {
   }
 };
 
-export const exportCanvasToPng = (canvas, fileName) =>
+export const exportCanvasToPng = (canvas, fileName, start, end) =>
   new Promise((resolve, reject) => {
     // Write the image to file
     const buffer = canvas.toBuffer("image/png");
 
-    createOutputFolders(imagePath);
+    const fullPath = `${imagePath}/${fileName}`;
 
-    fs.writeFile(
-      `${imagePath}${timestampFileName(fileName)}.png`,
-      buffer,
-      (err) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve();
+    createOutputFolders(fullPath);
+
+    fs.writeFile(`${fullPath}/${start}_${end}.png`, buffer, (err) => {
+      if (err) {
+        reject(err);
+        return;
       }
-    );
+      resolve();
+    });
   });
 
 export const exportToCsv = (rows, fileName) => {

@@ -5,7 +5,9 @@ import CLILoadingAnimation from "cli-loading-animation";
 const { loading } = CLILoadingAnimation;
 
 const fileName = "Sensoren_Technology_Is_Magic_2496.wav";
+
 const { start, stop } = loading("Generating image...");
+
 start();
 
 fs.readFile(`./${fileName}`, async (err, data) => {
@@ -16,8 +18,9 @@ fs.readFile(`./${fileName}`, async (err, data) => {
 
   const options = {
     fileName,
-    maxSize: 100,
-    csv: true,
+    offset: 4000,
+    maxSize: 1000,
+    csv: false,
   };
 
   await drawMonochromaticV1(data, options);
