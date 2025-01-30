@@ -21,7 +21,15 @@ fs.readFile(`./${fileName}`, async (err, data) => {
     fileName,
     maxSize: 1000,
     csv: false,
-    colorModifiers: [Math.random(), Math.random(), Math.random()],
+    // default color intensities
+    // setting these will create a monochromatic image
+    colorIntensity: {
+      red: 1,
+      green: 1,
+      blude: 1,
+    },
+    // this will override colorIntensity if true
+    randomColorIntensity: true,
     backgroundColor: "#000000",
   };
 

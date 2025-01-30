@@ -15,7 +15,12 @@ export const drawMonochromaticV1 = (data, userOptions) => {
     {
       fileName: "output-image",
       maxSize: null,
-      colorModifiers: [1, 1, 1], // must be between 0 and 1
+      randomColorIntensity: {
+        red: 1,
+        green: 1,
+        blude: 1,
+      },
+      random: false,
     },
     userOptions
   );
@@ -40,6 +45,9 @@ export const drawMonochromaticV1 = (data, userOptions) => {
   );
 
   const timestampedFileName = timestampFileName(fileName);
+
+  // Color intensity adjustments
+  const { red, green, blue } = useMemo(() => {});
 
   // while theres still data, loop through and create more images.
   let dataIndex = 0;
